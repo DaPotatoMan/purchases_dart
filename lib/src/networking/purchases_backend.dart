@@ -8,6 +8,7 @@ import 'endpoint.dart';
 import 'rc_http_status_code.dart';
 import '../parser/customer_parser.dart';
 import '../parser/offering_parser.dart';
+import '../parser/virtual_currencies_parser.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 /// Backend for Purchases.
@@ -71,6 +72,19 @@ class PurchasesBackend {
       currency: currency,
     );
     return await _offeringParser?.createOfferings(rawOfferings, rawProducts);
+  }
+
+  Future<VirtualCurrencies> getVirtualCurrencies(
+    String userId, {
+    PurchasesHeader? headers,
+  }) async {
+    final response = await _httpClient.get(
+      GetVirtualCurrencies(userId).path,
+      options: headers?.dioOptions,
+    );
+    return VirtualCurrenciesParser.parse(
+      Map<String, dynamic>.from(response.data as Map),
+    );
   }
 
   Future<({Uri? production, Uri? sandbox})?> getWebCheckoutUrl(
