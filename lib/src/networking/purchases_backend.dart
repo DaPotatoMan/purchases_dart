@@ -1,15 +1,16 @@
 import 'package:dio/dio.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
+
 import '../../purchases_dart.dart';
 import '../helper/api_key_helper.dart';
 import '../helper/purchase_error_code.dart';
 import '../model/raw_product.dart';
 import '../model/subscribe_attribute.dart';
-import 'endpoint.dart';
-import 'rc_http_status_code.dart';
 import '../parser/customer_parser.dart';
 import '../parser/offering_parser.dart';
 import '../parser/virtual_currencies_parser.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
+import 'endpoint.dart';
+import 'rc_http_status_code.dart';
 
 /// Backend for Purchases.
 ///
@@ -214,7 +215,9 @@ class PurchasesBackend {
     await _httpClient.post(
       PostAttributes(userId).path,
       options: headers?.dioOptions,
-      data: backendMap,
+      data: {
+        'attributes': backendMap,
+      },
     );
   }
 }
